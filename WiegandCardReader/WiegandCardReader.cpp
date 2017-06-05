@@ -10,11 +10,12 @@ using namespace Windows::Foundation;
 using namespace Windows::Foundation::Collections;
 using namespace Windows::System::Threading;
 using namespace Windows::Devices::Gpio;
-using namespace CardReader::Wiegner;
+using namespace WiegnerCardReader;
 
 _Use_decl_annotations_
 
-WiegnerCardReader::WiegnerCardReader(Windows::Devices::Gpio::GpioPin^ D0, Windows::Devices::Gpio::GpioPin^ D1)
+
+WiegnerReader::WiegnerReader(Windows::Devices::Gpio::GpioPin^ D0, Windows::Devices::Gpio::GpioPin^ D1)
 {
 	// ***
 	// *** Set Drive Mode to Input
@@ -28,41 +29,26 @@ WiegnerCardReader::WiegnerCardReader(Windows::Devices::Gpio::GpioPin^ D0, Window
 	this->_D1 = D1;
 }
 
-WiegnerCardReader::~WiegnerCardReader() {
+WiegnerReader::~WiegnerReader() {
 	this->_D0 = nullptr;
 	this->_D1 = nullptr;
 }
 
-Windows::Foundation::IAsyncOperation<WiegnerReading>^ WiegnerCardReader::GetReadingAsync()
+void WiegnerReader::GetReadingAsync()
 {
-	return this->GetReadingAsync(DEFAULT_MAX_RETRIES);
-}
-
-Windows::Foundation::IAsyncOperation<WiegnerReading>^ WiegnerCardReader::GetReadingAsync(int maxRetries)
-{
-	return create_async([this, maxRetries]
+	create_async([this]
 	{
-		WiegnerReading returnValue;
-		int i = 0;
-
-		for (i; i < maxRetries; i++)
-		{
-			returnValue = this->InternalGetReading();
-
-			if (returnValue.isValid)
-			{
-				break;
-			}
-		}
-
-		returnValue.retryCount = i;
-
-		return returnValue;
+		bool okToRun = true;
+		while(okToRun)
+			this->InternalGetReading();
 	});
 }
 
-WiegnerReading WiegnerCardReader::InternalGetReading()
+void WiegnerReader::InternalGetReading()
 {
 	WiegnerReading returnValue;
-	 // here is where the reading magic happens and whena  read is complete we return an object that is read so the event can fire should be able to new up as many of these as ports are available
+	 // here is where the reading magic happens and when a read is complete we return an object that is read so the event can fire should be able to new up as many of these as ports are available
+
+	// trigger the data recieved event
+	RecievedData(returnValue);
 }
