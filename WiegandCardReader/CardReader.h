@@ -10,8 +10,8 @@
 #endif
 
 
-namespace WiegnerCardReader {
-	public value struct WiegnerInit {
+namespace WiegandCardReader {
+	public value struct WiegandInit {
 		int D0;
 		int D1;
 		int LED;
@@ -21,8 +21,8 @@ namespace WiegnerCardReader {
 		bool UseWG34 = false;
 	};
 
-	public value struct WiegnerReading {
-		int64 currentData;
+	public value struct WiegandReading {
+		Platform::String^ cardData;
 		bool isValid;
 		int LED;
 		int BUZZER;
@@ -31,19 +31,19 @@ namespace WiegnerCardReader {
 		bool UseWG34 = false;
 	};
 
-	public delegate void RecieveData(WiegnerReading);
+	public delegate void RecieveData(WiegandReading);
 
-	public interface class IWiegnerReader
+	public interface class IWiegandReader
 	{
 		void GetReadingAsync();
 	};
 
-	public ref class WiegnerReader sealed : IWiegnerReader
+	public ref class WiegandReader sealed : IWiegandReader
 	{
 	public:
-		WiegnerReader(WiegnerInit);
+		WiegandReader(WiegandInit);
 		event RecieveData ^ RecievedData;
-		virtual ~WiegnerReader();
+		virtual ~WiegandReader();
 		virtual void GetReadingAsync();
 
 	private:

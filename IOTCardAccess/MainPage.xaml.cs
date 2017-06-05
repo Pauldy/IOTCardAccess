@@ -17,7 +17,7 @@ using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
-using WiegnerCardReader;
+using WiegandCardReader;
 using Windows.Devices.Gpio;
 
 // The Blank Page item template is documented at http://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x409
@@ -37,12 +37,12 @@ namespace IOTCardAccess
             GpioPin D1 = GpioController.GetDefault().OpenPin(5, GpioSharingMode.Exclusive);
 
 
-            WiegnerReader reader = new WiegnerReader(new WiegnerInit() { D0 = 4, D1 = 5, BUZZER = 6, DOOR = 7, LED = 8, WG34 = 9, UseWG34 = false });
+            WiegandReader reader = new WiegandReader(new WiegandInit() { D0 = 4, D1 = 5, BUZZER = 6, DOOR = 7, LED = 8, WG34 = 9, UseWG34 = false });
             reader.RecievedData += Reader_RecievedData;
             reader.GetReadingAsync();
         }
 
-        private void Reader_RecievedData(WiegnerReading __param0)
+        private void Reader_RecievedData(WiegandReading __param0)
         {
             // receive the data do lookup and open appropriate gate
 

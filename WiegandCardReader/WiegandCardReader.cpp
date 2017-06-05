@@ -10,12 +10,12 @@ using namespace Windows::Foundation;
 using namespace Windows::Foundation::Collections;
 using namespace Windows::System::Threading;
 using namespace Windows::Devices::Gpio;
-using namespace WiegnerCardReader;
+using namespace WiegandCardReader;
 
 _Use_decl_annotations_
 
 
-WiegnerReader::WiegnerReader(WiegnerInit init)
+WiegandReader::WiegandReader(WiegandInit init)
 {
 	// ***
 	// *** Set Drive Mode to Input
@@ -34,17 +34,17 @@ WiegnerReader::WiegnerReader(WiegnerInit init)
 	this->_DOOR = init.DOOR;
 }
 
-WiegnerReader::~WiegnerReader() {
+WiegandReader::~WiegandReader() {
 	this->_D0 = nullptr;
 	this->_D1 = nullptr;
 }
 
-void WiegnerReader::GetReadingAsync()
+void WiegandReader::GetReadingAsync()
 {
 	create_async([this]
 	{
 		bool okToRun = true;
-		WiegnerReading returnValue;
+		WiegandReading returnValue;
 		returnValue.BUZZER = this->_BUZZER;
 		returnValue.DOOR = this->_DOOR;
 		returnValue.LED = this->_LED;
