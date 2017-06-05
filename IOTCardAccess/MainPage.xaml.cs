@@ -36,7 +36,8 @@ namespace IOTCardAccess
             GpioPin D0 = GpioController.GetDefault().OpenPin(4, GpioSharingMode.Exclusive);
             GpioPin D1 = GpioController.GetDefault().OpenPin(5, GpioSharingMode.Exclusive);
 
-            WiegnerReader reader = new WiegnerReader(D0, D1);
+
+            WiegnerReader reader = new WiegnerReader(new WiegnerInit() { D0 = 4, D1 = 5, BUZZER = 6, DOOR = 7, LED = 8, WG34 = 9, UseWG34 = false });
             reader.RecievedData += Reader_RecievedData;
             reader.GetReadingAsync();
         }
@@ -44,6 +45,7 @@ namespace IOTCardAccess
         private void Reader_RecievedData(WiegnerReading __param0)
         {
             // receive the data do lookup and open appropriate gate
+
         }
     }
 }

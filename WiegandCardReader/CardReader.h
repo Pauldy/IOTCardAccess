@@ -11,11 +11,24 @@
 
 
 namespace WiegnerCardReader {
+	public value struct WiegnerInit {
+		int D0;
+		int D1;
+		int LED;
+		int BUZZER;
+		int WG34;
+		int DOOR;
+		bool UseWG34 = false;
+	};
+
 	public value struct WiegnerReading {
-		byte currentRead;
-		bool TimedOut;
+		int64 currentData;
 		bool isValid;
-		int retryCount;
+		int LED;
+		int BUZZER;
+		int WG34;
+		int DOOR;
+		bool UseWG34 = false;
 	};
 
 	public delegate void RecieveData(WiegnerReading);
@@ -28,15 +41,17 @@ namespace WiegnerCardReader {
 	public ref class WiegnerReader sealed : IWiegnerReader
 	{
 	public:
-		WiegnerReader(Windows::Devices::Gpio::GpioPin^ d0, Windows::Devices::Gpio::GpioPin^ d1);
+		WiegnerReader(WiegnerInit);
 		event RecieveData ^ RecievedData;
 		virtual ~WiegnerReader();
 		virtual void GetReadingAsync();
-		void InternalGetReading();
 
 	private:
 		Windows::Devices::Gpio::GpioPin^ _D0;
 		Windows::Devices::Gpio::GpioPin^ _D1;
-
+		int _BUZZER;
+		int _LED;
+		int _WG34;
+		int _DOOR;
 	};
 }
